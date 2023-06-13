@@ -1,181 +1,176 @@
 <!DOCTYPE html>
+
 <html>
+
 <head>
-  <title>Canteen Assemble</title>
+
+  <title>Interactive Popup Website</title>
+
   <style>
-    .popup-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
+
+    /* CSS for the popup boxes */
+
     .popup {
+
       background-color: white;
+
       padding: 20px;
-      border-radius: 10px;
+
+      border: 1px solid black;
+
+      width: 300px;
+
       text-align: center;
-    }
-    .options-container button {
-      margin: 5px;
-    }
-    .blood-drop {
+
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('blood-drop.png');
-      background-size: cover;
-      z-index: 999999;
+
+      left: 50%;
+
+      top: 50%;
+
+      transform: translate(-50%, -50%);
+
     }
+
   </style>
+
 </head>
+
 <body>
-  <div id="popup-container" class="popup-container"></div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+
+  <!-- First Popup Box -->
+
+  <div id="popup1" class="popup">
+
+    <h2>Are you sure about this?</h2>
+
+    <button onclick="showPopup(2)">I'm sure about this</button>
+
+    <button onclick="closeSite()">No, I'm not sure</button>
+
+  </div>
+
+  <!-- Second Popup Box -->
+
+  <div id="popup2" class="popup">
+
+    <h2>Are you REALLY sure about this?</h2>
+
+    <button onclick="showPopup(3)">Yeah, I'm really sure about this</button>
+
+    <button onclick="showPopup(4)">Is there really any problem with this site</button>
+
+  </div>
+
+  <!-- Third Popup Box -->
+
+  <div id="popup3" class="popup">
+
+    <h2>Well, there's no going back anymore 🤷‍♂️</h2>
+
+    <button onclick="showPopup(4)">Okay 🤷‍♂️</button>
+
+    <button onclick="showDelayedPopup(5, 5000)">What do you mean?</button>
+
+  </div>
+
+  <!-- Fourth Popup Box -->
+
+  <div id="popup4" class="popup">
+
+    <h2>Okay, choose one of these options</h2>
+
+    <button onclick="loadFile('https://drive.google.com/file/d/1aCsOPb_KCsEY6Yr558sF_CCNuiNkeqoM/view?usp=drivesdk')">Seniya Kunjuttan</button>
+
+    <button onclick="loadFile('https://drive.google.com/file/d/1adc26O3Y8ug87AhbwDu40421-QXComAg/view?usp=drivesdk')">Magical Sumo</button>
+
+    <button onclick="loadFile('https://drive.google.com/file/d/1aIhwb2niInoHskxoi8tNdE0Ng4c0O0Ep/view?usp=drivesdk')">Jumper Shaani</button>
+
+    <button onclick="loadFile('https://drive.google.com/file/d/1alK-PlRbenEVIyzJZnGcDc8-3nkQumQQ/view?usp=drivesdk')">Kuttante Pottan</button>
+
+    <button onclick="loadFile('https://drive.google.com/file/d/1aSa8Sx8bjdfjq8gPNFUuHe89RDE5yiP7/view?usp=drivesdk')">Said 80085</button>
+
+    <button onclick="loadFile('https://drive.google.com/file/d/1annvIfBLB-E0Rb21n-0q402qrt6m6Dmg/view?usp=drivesdk')">Uluppan Padakkachi</button>
+
+    <button onclick="loadFile('https://drive.google.com/file/d/1aobcVVm9NjaumdNm3_f0wHsmWlgg-de0/view?usp=drivesdk')">😊</button>
+
+  </div>
+
   <script>
-    const popupContainer = document.getElementById('popup-container');
-    const popups = [
-      {
-        id: 1,
-        message: 'Are you sure about this?',
-        options: [
-          {
-            text: "I'm sure about this",
-            nextPopup: 2
-          },
-          {
-            text: "No, I'm not sure",
-            closeSite: true
-          }
-        ]
-      },
-      {
-        id: 2,
-        message: 'Are you REALLY sure about this?',
-        options: [
-          {
-            text: 'Yeah, I am really sure about this',
-            nextPopup: 3
-          },
-          {
-            text: 'Is there really any problem with this site?',
-            nextPopup: 3
-          }
-        ]
-      },
-      {
-        id: 3,
-        message: "Well, there's no going back anymore 🤷‍♂️",
-        options: [
-          {
-            text: 'Okay 🤷‍♂️',
-            nextPopup: 4
-          },
-          {
-            text: 'What do you mean?',
-            nextPopup: 4
-          }
-        ]
-      },
-      {
-        id: 4,
-        message: 'Okay, choose one of these options',
-        options: [
-          {
-            text: 'Seniya Kunjuttan',
-            fileUrl:
-              'https://drive.google.com/file/d/1aCsOPb_KCsEY6Yr558sF_CCNuiNkeqoM/view?usp=drivesdk'
-          },
-          {
-            text: 'Magical Sumo',
-            fileUrl:
-              'https://drive.google.com/file/d/1adc26O3Y8ug87AhbwDu40421-QXComAg/view?usp=drivesdk'
-          },
-          {
-            text: 'Jumper Shaani',
-            fileUrl:
-              'https://drive.google.com/file/d/1aIhwb2niInoHskxoi8tNdE0Ng4c0O0Ep/view?usp=drivesdk'
-          },
-          {
-            text: 'Kuttante Pottan',
-            fileUrl:
-              'https://drive.google.com/file/d/1alK-PlRbenEVIyzJZnGcDc8-3nkQumQQ/view?usp=drivesdk'
-          },
-          {
-            text: 'Said 80085',
-            fileUrl:
-              'https://drive.google.com/file/d/1aSa8Sx8bjdfjq8gPNFUuHe89RDE5yiP7/view?usp=drivesdk'
-          },
-          {
-            text: 'Uluppan Padakkachi',
-            fileUrl:
-              'https://drive.google.com/file/d/1annvIfBLB-E0Rb21n-0q402qrt6m6Dmg/view?usp=drivesdk'
-          },
-          {
-            text: '😊',
-            fileUrl:
-              'https://drive.google.com/file/d/1aobcVVm9NjaumdNm3_f0wHsmWlgg-de0/view?usp=drivesdk'
-          }
-        ]
-      }
-    ];
 
-    let currentPopupIndex = 0;
+    // Function to show the specified popup
 
-    function displayPopup() {
-      const popup = popups[currentPopupIndex];
+    function showPopup(popupNumber) {
 
-      const popupContent = `
-        <div class="popup">
-          <h2>Popup ${popup.id}</h2>
-          <p>${popup.message}</p>
-          <div class="options-container">
-            ${popup.options
-              .map(
-                option =>
-                  `<button onclick="handleOptionClick(${option.nextPopup}, '${option.fileUrl}', ${option.closeSite})">${option.text}</button>`
-              )
-              .join('')}
-          </div>
-        </div>
-      `;
+      hideAllPopups();
 
-      popupContainer.innerHTML = popupContent;
+      document.getElementById("popup" + popupNumber).style.display = "block";
+
+      darkenBackground(popupNumber);
+
     }
 
-    function handleOptionClick(nextPopupIndex, fileUrl, closeSite) {
-      if (closeSite) {
-        window.close();
-        return;
-      }
+    // Function to show the specified popup after a delay
 
-      currentPopupIndex = nextPopupIndex;
+    function showDelayedPopup(popupNumber, delay) {
 
-      if (currentPopupIndex === popups.length - 1) {
-        const bloodDrop = document.createElement('div');
-        bloodDrop.classList.add('blood-drop');
-        document.body.appendChild(bloodDrop);
+      setTimeout(function() {
 
-        gsap.to(bloodDrop, { y: '100%', duration: 1, ease: 'power3.out' });
+        showPopup(popupNumber);
 
-        gsap.to('body', { backgroundColor: 'red', duration: 1, delay: 1 });
+      }, delay);
 
-        setTimeout(() => {
-          window.location.href = fileUrl;
-        }, 2000);
-      } else {
-        displayPopup();
-      }
     }
 
-    displayPopup();
+    // Function to close the site
+
+    function closeSite() {
+
+      window.close();
+
+    }
+
+    // Function to load a file
+
+    function loadFile(fileUrl) {
+
+      // Replace this code with the appropriate logic to load the file on your website
+
+      console.log("Loading file: " + fileUrl);
+
+    }
+
+    // Function to hide all popups
+
+    function hideAllPopups() {
+
+      var popups = document.getElementsByClassName("popup");
+
+      for (var i = 0; i < popups.length; i++) {
+
+        popups[i].style.display = "none";
+
+      }
+
+    }
+
+    // Function to darken the background color as each popup is shown
+
+    function darkenBackground(popupNumber) {
+
+      var opacity = popupNumber * 0.1;
+
+      document.body.style.backgroundColor = "rgba(0, 0, 0, " + opacity + ")";
+
+    }
+
+    // Show the first popup by default
+
+    showPopup(1);
+
   </script>
+
 </body>
+
 </html>
+
