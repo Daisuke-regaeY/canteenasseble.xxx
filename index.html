@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Canteen Assemble</title>
+  <style>
+    .popup-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .popup {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .options-container button {
+      margin: 5px;
+    }
+    .blood-drop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('blood-drop.png');
+      background-size: cover;
+      z-index: 999999;
+    }
+  </style>
+</head>
+<body>
+  <div id="popup-container" class="popup-container"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+  <script>
+    const popupContainer = document.getElementById('popup-container');
+    const popups = [
+      {
+        id: 1,
+        message: 'Are you sure about this?',
+        options: [
+          {
+            text: "I'm sure about this",
+            nextPopup: 2
+          },
+          {
+            text: "No, I'm not sure",
+            closeSite: true
+          }
+        ]
+      },
+      {
+        id: 2,
+        message: 'Are you REALLY sure about this?',
+        options: [
+          {
+            text: 'Yeah, I am really sure about this',
+            nextPopup: 3
+          },
+          {
+            text: 'Is there really any problem with this site?',
+            nextPopup: 4
+          }
+        ]
+      },
+      {
+        id: 3,
+        message: "Well, there's no going back anymore 🤷‍♂️",
+        options: [
+          {
+            text: 'Okay 🤷‍♂️',
+            nextPopup: 4
+          },
+          {
+            text: 'What do you mean?',
+            nextPopup: 5
+          }
+        ]
+      },
+      {
+        id: 4,
+        message: 'Okay, choose one of these options',
+        options: [
+          {
+            text: 'Seniya Kunjuttan',
+            fileUrl:
+              'https://drive.google.com/file/d/1aCsOPb_KCsEY6Yr558sF_CCNuiNkeqoM/view?usp=drivesdk'
+          },
+          {
+            text: 'Magical Sumo',
+            fileUrl:
+              'https://drive.google.com/file/d/1adc26O3Y8ug87AhbwDu40421-QXComAg/view?usp=drivesdk'
+          },
+          {
+            text: 'Jumper Shaani',
+            fileUrl:
+              'https://drive.google.com/file/d/1aIhwb2niInoHskxoi8tNdE0Ng4c0O0Ep/view?usp=drivesdk'
+          },
+          {
+            text: 'Kuttante Pottan',
+            fileUrl:
+              'https://drive.google.com/file/d/1alK-PlRbenEVIyzJZnGcDc8-3nkQumQQ/view?usp=drivesdk'
+          },
+          {
+            text: 'Said 80085',
+            fileUrl:
+              'https://drive.google.com/file/d/1aSa8Sx8bjdfjq8gPNFUuHe89RDE5yiP7/view?usp=drivesdk'
+          },
+          {
+            text: 'Uluppan Padakkachi',
+            fileUrl:
+              'https://drive.google.com/file/d/1annvIfBLB-E0Rb21n-0q402qrt6m6Dmg/view?usp=drivesdk'
+          },
+          {
+            text: '😊',
+            fileUrl:
+              'https://drive.google.com/file/d/1aobcVVm9NjaumdNm3_f0wHsmWlgg-de0/view?usp=drivesdk'
+          }
+        ]
+      }
+    ];
+
+    let currentPopupIndex = 0;
+
+    function displayPopup() {
+      const popup = popups[currentPopupIndex];
+
+      const popupContent = `
+        <div class="popup">
+          <h2>Popup ${popup.id}</h2>
+          <p>${popup.message}</p>
+          <div class="options-container">
+            ${popup.options
+              .map(
+                option =>
+                  `<button onclick="handleOptionClick(${option.nextPopup}, '${option.fileUrl}', ${option.closeSite})">${option.text}</button>`
+              )
+              .join('')}
+          </div>
+        </div>
+      `;
+
+      popupContainer.innerHTML = popupContent;
+    }
+
+    function handleOptionClick(nextPopupIndex, fileUrl, closeSite) {
+      if (closeSite) {
+        window.close();
+        return;
+      }
+
+      currentPopupIndex = nextPopupIndex;
+
+      if (currentPopupIndex === popups.length - 1) {
+        const bloodDrop = document.createElement('div');
+        bloodDrop.classList.add('blood-drop');
+        document.body.appendChild(bloodDrop);
+
+        gsap.to(bloodDrop, { y: '100%', duration: 1, ease: 'power3.out' });
+
+        gsap.to('body', { backgroundColor: 'red', duration: 1, delay: 1 });
+
+        setTimeout(() => {
+          window.location.href = fileUrl;
+        }, 2000);
+      } else {
+        displayPopup();
+      }
+    }
+
+    displayPopup();
+  </script>
+</body>
+</html>
